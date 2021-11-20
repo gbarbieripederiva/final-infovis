@@ -1,0 +1,4 @@
+{
+    "ext": "js,ts,html,env",
+    "exec":"npm start"
+}
