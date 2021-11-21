@@ -14,7 +14,7 @@ export class DBSingleton {
                 : undefined,
             keepAlive: true,
         });
-        await DBSingleton._instance.connect();
+        await instance.connect();
         process.on("beforeExit",async () => {
             if (!instance.closed) {
                 await instance.end();
