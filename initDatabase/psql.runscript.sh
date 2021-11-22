@@ -1,2 +1,3 @@
 #!/bin/bash
-PGPASSWORD=contraseña psql -h localhost -U usuario -f $1
+source $(dirname $(realpath $BASH_SOURCE))/envVars
+PGPASSWORD=$PGPASSWORD psql -h localhost -U $PGUSER -d $DBNAME -f $1
