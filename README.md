@@ -1,7 +1,14 @@
 # Final de Visualizacion de la Informacion
 
 ## Inicializar la base de datos
-Para inicializar la base de datos con nuestros scripts ingresar a la carpeta `initDatabase` y correr los siguientes comandos uno a uno:
+Para inicializar la base de datos con nuestros scripts ingresar a la carpeta `initDatabase` y hacer una copia del archivo `envVars.example` y renombrarlo a `envVars`. El mismo contendra las siguientes opciones que se pueden editar:
+```bash
+export PGUSER=username
+export PGPASSWORD=password
+export DBNAME=postgres
+export DBPORT=5432
+```
+Luego correr los siguientes comandos uno a uno:
 ```bash
 getData.sh
 createDockerPostgres.sh
