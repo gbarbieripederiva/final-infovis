@@ -1,3 +1,4 @@
 export PGUSER=username
 export PGPASSWORD=password
 export DBNAME=postgres
+export DBPORT=5432

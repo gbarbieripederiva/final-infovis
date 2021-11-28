@@ -5,4 +5,4 @@ if [ "$(uname)" != "Linux" ]; then
     }
 fi
 source $(dirname $(realpath $BASH_SOURCE))/envVars
-PGPASSWORD=$PGPASSWORD psql -h localhost -U $PGUSER -d $DBNAME -f $1
+PGPASSWORD=$PGPASSWORD psql -p $DBPORT -h localhost -U $PGUSER -d $DBNAME -f $1
