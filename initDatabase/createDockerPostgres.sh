@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ "$(uname)" != "Linux" ]; then
+    realpath() {
+        [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+    }
+fi
 source $(dirname $(realpath $BASH_SOURCE))/envVars
 
 DB_DATA_FOLDER=$(dirname $(realpath $BASH_SOURCE))/dbdata
