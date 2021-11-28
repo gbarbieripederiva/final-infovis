@@ -1,5 +1,20 @@
 # Final de Visualizacion de la Informacion
 
+## Inicializar la base de datos
+Para inicializar la base de datos con nuestros scripts ingresar a la carpeta `initDatabase` y correr los siguientes comandos uno a uno:
+```bash
+getData.sh
+createDockerPostgres.sh
+psql.runscript.sh ./scripts/createTables.sql
+copyDataCSV.sh
+psql.runscript.sh ./scripts/posInsertProcess.sql
+```
+
+Por ultimo cuando se desee apagar la base de datos se debe correr:
+```bash
+stopDockerPostgres.sh
+```
+
 ## Configuracion
 Para configurar la aplicacion se puede usar cualquiera de las siguientes opciones, las cuales deben agregarse en el archivo `config.env` en el directorio raiz de la aplicacion
 ```
