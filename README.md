@@ -15,6 +15,13 @@ Por ultimo cuando se desee apagar la base de datos se debe correr:
 stopDockerPostgres.sh
 ```
 
+## Antes de correr
+Antes de correr la aplicacion es importante correr
+```
+npm install
+```
+Para instalar las dependencias necesarias
+
 ## Configuracion
 Para configurar la aplicacion se puede usar cualquiera de las siguientes opciones, las cuales deben agregarse en el archivo `config.env` en el directorio raiz de la aplicacion
 ```
