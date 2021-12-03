@@ -1,0 +1,201 @@
+openapi: 3.0.3
+info:
+  title: Infovis
+  version: '1.0'
+  x-logo:
+    url: ''
+paths:
+# Agrupaciones --------------------------------------------------------------------------
+  /agrupaciones:
+    get:
+      tags: 
+        - agrupaciones
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/agrupacion'
+# Cargos --------------------------------------------------------------------------
+  /cargos:
+    get:
+      tags: 
+        - cargos
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/cargo'
+          description: ''
+          headers: {}
+          links: {}
+# PROVINCIAS --------------------------------------------------------------------------
+  /provincias: 
+    get:
+      tags:
+        - provincias
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/provincia'
+  /provincias/{id}:
+    get:
+      tags:
+        - provincias
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/provincia'
+  /provincias/{id}/agrupaciones:
+    get:
+      tags:
+        - provincias
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/agrupacion'
+
+  /provincias/{id}/agrupaciones/{id}/cargos/{id}/votos:
+    get:
+      tags:
+        - provincias
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: number
+
+  /provincias/{id}/agrupaciones/votos:
+    get:
+      tags:
+        - provincias
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/agrupacionCargoCantidad'
+  
+  /provincias/{id}/agrupaciones/{id}/votos:
+    get:
+      tags:
+        - provincias
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/cargoCantidad'
+
+  /provincias/{id}/cargos:
+    get:
+      tags:
+        - provincias
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/cargo'
+  
+  /provincias/{id}/tipovoto/{id}/votos:
+    get:
+      tags:
+        - provincias
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/cargoCantidad'
+# Tipo de votos --------------------------------------------------------------------------
+  /tiposDeVotos:
+    get:
+      tags:
+        - tipo de voto
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/tipoDeVoto'
+components:
+  schemas:
+    agrupacion:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    agrupacionCargoCantidad:
+      type: object
+      properties:
+        idAgrupacion:
+          type: number
+        idCargo:
+          type: number
+        cantidad:
+          type: number
+    cargo:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    cargoCantidad:
+      type: object
+      properties:
+        idCargo:
+          type: number
+        cantidad:
+          type: number
+    provincia:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    tipoDeVoto:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+  headers: {}
+  responses: {}
+  parameters: {}
+tags: []
+servers:
+  - url: ../api
+    description: ''
+    variables: {}
