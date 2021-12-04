@@ -12,6 +12,7 @@ paths:
         - agrupaciones
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
@@ -25,13 +26,13 @@ paths:
         - cargos
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/cargo'
-          description: ''
           headers: {}
           links: {}
 # PROVINCIAS --------------------------------------------------------------------------
@@ -41,28 +42,35 @@ paths:
         - provincias
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/provincia'
-  /provincias/{id}:
+  /provincias/{idProvincia}:
     get:
       tags:
         - provincias
+      parameters:
+        - $ref: '#/components/parameters/idProvincia'
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/provincia'
-  /provincias/{id}/agrupaciones:
+  /provincias/{idProvincia}/agrupaciones:
     get:
       tags:
         - provincias
+      parameters:
+        - $ref: '#/components/parameters/idProvincia'
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
@@ -70,23 +78,31 @@ paths:
                 items:
                   $ref: '#/components/schemas/agrupacion'
 
-  /provincias/{id}/agrupaciones/{id}/cargos/{id}/votos:
+  /provincias/{idProvincia}/agrupaciones/{idAgrupacion}/cargos/{idCargo}/votos:
     get:
       tags:
         - provincias
+      parameters:
+        - $ref: '#/components/parameters/idProvincia'
+        - $ref: '#/components/parameters/idAgrupacion'
+        - $ref: '#/components/parameters/idCargo'
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
                 type: number
 
-  /provincias/{id}/agrupaciones/votos:
+  /provincias/{idProvincia}/agrupaciones/votos:
     get:
       tags:
         - provincias
+      parameters:
+        - $ref: '#/components/parameters/idProvincia'
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
@@ -94,12 +110,16 @@ paths:
                 items:
                   $ref: '#/components/schemas/agrupacionCargoCantidad'
   
-  /provincias/{id}/agrupaciones/{id}/votos:
+  /provincias/{idProvincia}/agrupaciones/{idAgrupacion}/votos:
     get:
       tags:
         - provincias
+      parameters:
+        - $ref: '#/components/parameters/idProvincia'
+        - $ref: '#/components/parameters/idAgrupacion'
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
@@ -107,12 +127,15 @@ paths:
                 items:
                   $ref: '#/components/schemas/cargoCantidad'
 
-  /provincias/{id}/cargos:
+  /provincias/{idProvincia}/cargos:
     get:
       tags:
         - provincias
+      parameters:
+        - $ref: '#/components/parameters/idProvincia'
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
@@ -120,12 +143,16 @@ paths:
                 items:
                   $ref: '#/components/schemas/cargo'
   
-  /provincias/{id}/tipovoto/{id}/votos:
+  /provincias/{idProvincia}/tipovoto/{idTipoDeVoto}/votos:
     get:
       tags:
         - provincias
+      parameters:
+        - $ref: '#/components/parameters/idProvincia'
+        - $ref: '#/components/parameters/idTipoDeVoto'
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
@@ -139,6 +166,7 @@ paths:
         - tipo de voto
       responses:
         '200':
+          description: OK
           content:
             application/json:
               schema:
@@ -193,7 +221,32 @@ components:
           type: string
   headers: {}
   responses: {}
-  parameters: {}
+  parameters:
+    idAgrupacion:
+      name: idAgrupacion
+      required: true
+      in: path
+      schema:
+        type: number
+    idCargo:
+      name: idCargo
+      required: true
+      in: path
+      schema:
+        type: number
+    idProvincia:
+      name: idProvincia
+      required: true
+      in: path
+      schema:
+        type: number
+    idTipoDeVoto:
+      name: idTipoDeVoto
+      required: true
+      in: path
+      schema:
+        type: number
+
 tags: []
 servers:
   - url: ../api
