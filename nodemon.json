@@ -2,5 +2,5 @@
     "ext": "js,ts,html,env,yaml",
     
     "exec": "npm start",
-    "ignore": ["src/public/docs"]
+    "ignore": ["src/public/docs", "src/public/docs/index.html"]
 }

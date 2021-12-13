@@ -19,6 +19,21 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/agrupacion'
+    
+  /agrupaciones/{votos}:
+    get:
+      tags: 
+        - agrupaciones
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/cargoCantidad'
+
 # Cargos --------------------------------------------------------------------------
   /cargos:
     get:
@@ -35,7 +50,8 @@ paths:
                   $ref: '#/components/schemas/cargo'
           headers: {}
           links: {}
-# PROVINCIAS --------------------------------------------------------------------------
+
+# Provincias --------------------------------------------------------------------------
   /provincias: 
     get:
       tags:
@@ -49,6 +65,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/provincia'
+
   /provincias/{idProvincia}:
     get:
       tags:
@@ -62,6 +79,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/provincia'
+
   /provincias/{idProvincia}/agrupaciones:
     get:
       tags:
@@ -159,6 +177,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/cargoCantidad'
+
 # Tipo de votos --------------------------------------------------------------------------
   /tiposDeVotos:
     get:
