@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "43e4b302-78e9-4355-a363-51361302c48f",
+		"name": "final-infovis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "agrupaciones",
+			"item": [
+				{
+					"name": "/agrupaciones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{$url}}/api/agrupaciones",
+							"host": [
+								"{{$url}}"
+							],
+							"path": [
+								"api",
+								"agrupaciones"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cargos",
+			"item": [
+				{
+					"name": "/cargos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/cargos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"cargos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "provincias",
+			"item": [
+				{
+					"name": "agrupaciones",
+					"item": [
+						{
+							"name": "/agrupaciones",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/provincias/7/agrupaciones",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"provincias",
+										"7",
+										"agrupaciones"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/agrupaciones/votos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/provincias/7/agrupaciones/votos",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"provincias",
+										"7",
+										"agrupaciones",
+										"votos"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/provincias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/provincias",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"provincias"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tiposDeVotos",
+			"item": [
+				{
+					"name": "/tiposDeVotos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/tiposDeVotos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"tiposDeVotos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "localhost:8080"
+		}
+	]
+}
