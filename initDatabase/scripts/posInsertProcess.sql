@@ -27,7 +27,7 @@ WHERE IdSeccion != '';
 INSERT INTO circuitos (idBD, idSeccion)
     SELECT DISTINCT IdCircuito,
     s.idSeccion
-FROM votos_aux a JOIN secciones s ON CAST(a.IdSeccion AS INTEGER) = s.idBD AND CAST(a.IdDistrito AS INTEGER) = s.idProvincia
+FROM (select * from votos_aux ) as a JOIN secciones s ON CAST(a.IdSeccion AS INTEGER) = s.idBD AND CAST(a.IdDistrito AS INTEGER) = s.idProvincia
 WHERE IdCircuito != '';
 
 WITH newS AS (
@@ -57,21 +57,22 @@ from (
                         idCircuito,
                         establecimiento,
                         codigo
-                    from votos_aux
+                    FROM votos_aux
                     group by idDistrito,
                         idSeccion,
                         idCircuito,
                         establecimiento,
                         codigo
+                    
                 ) as A
                 LEFT JOIN newS s ON s.idProvincia = CAST(IdDistrito AS INTEGER)
                 AND s.idBD = CAST(a.idSeccion AS INTEGER)
-            ) AS D
-            LEFT JOIN newC c ON c.idBD = D.idCircuito AND c.idSeccion = D.idsecNoConflict
-    ) as f
+            ) AS aas
+            LEFT JOIN newC c ON c.idBD = aas.idCircuito AND c.idSeccion = aas.idsecNoConflict
+    ) as aasc
 group BY idcirNoConflict,
     establecimiento,
-    codigo) as ff;
+    codigo) as aasc2;
 
 INSERT INTO envios(idEnvio, date)
     SELECT DISTINCT CAST(envio AS INTEGER),
@@ -84,7 +85,7 @@ INSERT INTO mesas (idBd, idEstablecimiento, electores, idEnvio)
     e.idEstablecimiento,
     CAST(electores AS INTEGER),
     en.idEnvio
-FROM establecimientos e JOIN votos_aux a ON e.establecimiento = a.establecimiento
+FROM establecimientos e JOIN (select * from votos_aux ) as a ON e.establecimiento = a.establecimiento and e.codigo = CAST(a.codigo AS INTEGER)
 JOIN envios en ON en.idEnvio = CAST(a.envio AS INTEGER)
 WHERE mesa != '';
 
@@ -110,18 +111,33 @@ newTV AS (
 newE AS (
     SELECT idEstablecimiento AS idestablecimientoNoConflict,
         establecimiento, 
-        idCircuito, 
+        idCircuito as idcirinest, 
         codigo
     FROM establecimientos
+),
+newC AS (
+    SELECT idCircuito AS idcirNoConflict,
+        idbd,
+        idSeccion AS idsecincirNoConflict
+    FROM circuitos
+),
+newS AS (
+    SELECT idSeccion AS idsecNoConflict,
+        idbd,
+        idProvincia,
+        seccion
+    FROM secciones
 )
 INSERT INTO votos(idAgrupacion, idCargo, idMesa, idTipoVoto, votes)
     SELECT CAST(idAgrupacionInt AS INTEGER), CAST(idCargo AS INTEGER), idmesaNoConflict, idtipovotoNoConflict, CAST(votos AS INTEGER)
     FROM 
-        ((((SELECT idAgrupacionInt, idCargo, mesa, tipoVoto, votos, establecimiento
-        FROM votos_aux) as A
+        ((((((SELECT idAgrupacionInt, idCargo, mesa, tipoVoto, votos, establecimiento, codigo, idCircuito, idSeccion, idDistrito
+        FROM votos_aux) AS A
         LEFT JOIN newTV tv ON tv.tipoVoto = A.tipoVoto) AS ATV
-        LEFT JOIN newE e ON e.establecimiento = ATV.establecimiento) AS ATVE
-        LEFT JOIN newM m ON m.idBD = ATVE.mesa AND ATVE.idestablecimientoNoConflict = m.idEstablecimiento) AS ATVEM;
+        LEFT JOIN newC c ON c.idbd = ATV.idCircuito and c.idsecincirNoConflict = CAST(ATV.idSeccion AS INTEGER)) AS ATVC
+        LEFT JOIN newS s ON s.idbd = ATVC.idsecincirNoConflict and s.idProvincia = CAST(ATVC.idDistrito AS INTEGER)) AS ATVCS
+        LEFT JOIN newE e ON e.establecimiento = ATVCS.establecimiento and e.codigo = CAST(ATVCS.codigo AS INTEGER) and e.idcirinest = ATVCS.idcirNoConflict) AS ATVCSE
+        LEFT JOIN newM m ON m.idBD = ATVCSE.mesa AND ATVCSE.idestablecimientoNoConflict = m.idEstablecimiento) AS ATVCSEM;
     
 INSERT INTO agrupacionProvincia(idAgrupacion, idProvincia)
     SELECT DISTINCT CAST(idAgrupacionInt AS INTEGER), 
