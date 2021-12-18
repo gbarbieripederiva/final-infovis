@@ -27,7 +27,6 @@ async function getMainNode(){
         .style("fill", "#fff")
         .style("stroke", "#ccc")
         .on("mouseover", function (event, a, i) {
-            let d = getData(a.properties.nombre);
             return tooltip
                 .text(
                     "ejemplo tooltip"
