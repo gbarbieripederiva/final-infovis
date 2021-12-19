@@ -3,12 +3,13 @@ import { getTiposDeVotos, getTiposDeVotosCount } from "../database/tiposDeVotosD
 
 let tipoDeVotoRoute = Router({});
 
+tipoDeVotoRoute.get("/votos/:id?", async(req, res) => {
+    res.status(200).json(await getTiposDeVotosCount(req.params.id))
+})
+
 tipoDeVotoRoute.get("/:id?", async (req, res) => {
     res.status(200).json(await getTiposDeVotos(req.params.id));
 });
 
-tipoDeVotoRoute.get("/votos/:id?", async(req, res) => {
-    res.status(200).json(await getTiposDeVotosCount(req.params.id))
-})
 
 export default tipoDeVotoRoute;
