@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAgrupaciones } from "../database/agrupaciones";
+import { getAgrupaciones } from "../database/agrupacionesDB";
 
 let agrupacionRoute = Router({});
 

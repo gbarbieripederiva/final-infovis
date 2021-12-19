@@ -5,7 +5,7 @@ export async function getProvincias(id?: string) {
 
     if (id) {
         const result = await instance.query(
-            "SELECT * FROM provincias WHERE idProvincia = $1 LIMIT 1",
+            "SELECT * FROM provincias WHERE idprovincia = $1 LIMIT 1",
             [id]
         );
         return result.rows.map((row) => {
@@ -29,10 +29,11 @@ export async function getAgrupacionesFromProvincia(
         const result = await instance.query(
             `
             SELECT * 
-            FROM 
-            WHERE id = $1 LIMIT 1
+            FROM agrupacionprovincia
+            WHERE idprovincia = $1
+            AND idagrupacion = $2 
             `,
-            [idProv]
+            [idProv, idAgrup]
         );
         return result.rows.map((row) => {
             return { id: row[0] as string, name: row[1] as string };
@@ -40,7 +41,9 @@ export async function getAgrupacionesFromProvincia(
     } else {
         const result = await instance.query(
             `
-            SELECT * FROM provincias
+            SELECT * 
+            FROM agrupacionprovincia
+            WHERE idprovincia = $1
             `
         );
         return result.rows.map((row) => {
