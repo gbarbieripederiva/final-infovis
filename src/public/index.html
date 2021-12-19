@@ -1,12 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infovis</title>
-</head>
-<body>
-    <p>Hola mundo!!</p>
-</body>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>InfoVis</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    </head>
+    <body>
+        <main>
+            <div class="titles">
+                <h1>TP Final InfoVis</h1>
+                <h2>Elecciones 2021</h2>
+            </div>
+
+            <p>
+                Para este trabajo se utilizaron los datos oficiales ofrecidos en
+                el siguiente
+                <a
+                    href="https://telegramas.resultados.gob.ar/MESAS_ESCRUTADAS_Cierre.zip"
+                    >link</a
+                >. A partir de estos, se diseñó una base de datos PostgreSQL
+                normalizada y una API JSON. El objetivo de la API es obtener los
+                datos de manera sencilla para realizar cualquier visualizacion
+                que se desee.
+            </p>
+
+            <p>
+                Como ejemplo de visualizaciones posibles armamos las siguientes,
+                utilizando <a href="https://d3js.org/">D3.js</a>:
+            </p>
+            <ul>
+                <li><a href="examples/firstExample">Ejemplo1</a></li>
+            </ul>
+
+            <p>
+                Links interesantes: 
+                <ul>
+                    <li>
+                        <a href="docs">documentación</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/gbarbieripederiva/final-infovis">github
+                        </a>
+                    </li>
+                </ul>
+            </p>
+            <div class="pie">
+                <p>- Guido, Agustín y Joaquín</p>
+            </div>
+        </main>
+    </body>
 </html>
