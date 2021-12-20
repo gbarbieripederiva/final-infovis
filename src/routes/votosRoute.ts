@@ -3,8 +3,8 @@ import { getVotos } from "../database/votosDB";
 
 let votosRoute = Router({});
 
-votosRoute.get("/:id?", async (req, res) => {
-    res.status(200).json(await getVotos(req.params.id));
+votosRoute.get("/", async (req, res) => {
+    res.status(200).json(await getVotos());
 });
 
 export default votosRoute;

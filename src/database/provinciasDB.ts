@@ -88,13 +88,13 @@ export async function getCargosFromProvincia(idProv: string, idCargo?: string) {
     if (idCargo) {
         const result = await instance.query(
             `
-            SELECT DISTINCT provincia, cargo
+            SELECT DISTINCT idprovincia, provincia, vpscemc.idcargo, cargo 
             FROM (((
-                SELECT DISTINCT idmesa, idcargo
+                SELECT DISTINCT idmesa, idcargo as idcargo2
                 FROM votos
                 WHERE idcargo = $2) AS v
             JOIN pscem ON pscem.idMesa = v.idMesa) AS vpscem
-            JOIN cargos c ON c.idcargo = v.idcargo) AS vpscemc
+            JOIN cargos c ON c.idcargo = vpscem.idcargo2) AS vpscemc
             WHERE idprovincia = $1
             `,
             [idProv, idCargo]
@@ -234,7 +234,7 @@ export async function getSeccionesFromProvincias(idProvincia: string, idSeccion?
             `, 
             [idProvincia, idSeccion]);
         return result.rows.map((row) => {
-            return { idProvincia: row[0] as string, idSeccion: row[0] as string };
+            return { idProvincia: row[0] as string, idSeccion: row[1] as string };
         })[0];
         
     } else {
