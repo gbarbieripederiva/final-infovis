@@ -1,3 +1,4 @@
+import { parse } from "path/posix";
 import DBSingleton from "./db";
 
 export async function getTiposDeVotos(id?: string) {
@@ -28,7 +29,7 @@ export async function getTiposDeVotosCount(id?: string) {
             [id]
         );
         return result.rows.map((row) => {
-            return { sum: (row[0] as bigint).toString()};
+            return { sum: parseInt((row[0] as bigint).toString())};
         })[0];
     } else {
         const result = await instance.query(
@@ -40,7 +41,7 @@ export async function getTiposDeVotosCount(id?: string) {
                 LEFT JOIN tiposvotos tv ON v.idtipovoto = tv.idtipovoto);
             `);
         return result.rows.map((row) => {
-            return { id: row[0] as string, tipovoto: row[1] as string, count: (row[2] as bigint).toString() };
+            return { id: row[0] as string, tipovoto: row[1] as string, count: parseInt((row[2] as bigint).toString()) };
         });
     }
 }

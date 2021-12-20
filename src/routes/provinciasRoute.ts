@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
     getAgrupacionesFromProvincia,
     getProvincias,
+    getCargosFromProvincia
 } from "../database/provinciasDB";
 
 let provinciaRoute = Router({});
@@ -20,5 +21,15 @@ provinciaRoute.get(
         );
     }
 );
+provinciaRoute.get(
+    "/:idProvincia/cargos/:idCargos?",
+   async (req, res) => {
+       res.status(200).json(await getCargosFromProvincia(
+           req.params.idProvincia,
+           req.params.idCargos
+       ))
+       
+   }
+)
 
 export default provinciaRoute;
