@@ -189,3 +189,37 @@ export async function getSeccionesFromProvincias(idProvincia: string, idSeccion?
         });
     }
 }
+
+export async function getVotosFromAgrupacionByProvinciaAndCargo(idProvincia: string, idCargo:string, idAgrupacion?: string) {
+    const instance = await DBSingleton.instance();
+
+    if (idAgrupacion) {
+        const result = await instance.query(
+            `
+            SELECT idagrupacion, sum(votes) FROM (
+                SELECT * FROM votos JOIN pscem ON pscem.idMesa = votos.idMesa) AS vpscem
+                WHERE idProvincia = $1
+                AND idCargo = $2 AND idagrupacion = $3
+                GROUP BY idagrupacion
+            `, 
+            [idProvincia, idCargo, idAgrupacion]);
+        return result.rows.map((row) => {
+            return { idAgrupacion: row[0] as string, votos: parseInt((row[1] as bigint).toString()) };
+        })[0];
+        
+    } else {
+        const result = await instance.query(
+            `
+            SELECT idagrupacion, sum(votes) FROM (
+                SELECT * FROM votos JOIN pscem ON pscem.idMesa = votos.idMesa) AS vpscem
+                WHERE idProvincia = $1
+                AND idCargo = $2
+                GROUP BY idagrupacion
+            `,
+            [idProvincia, idCargo]
+        );
+        return result.rows.map((row) => {
+            return { idAgrupacion: row[0] as string, votos: parseInt((row[1] as bigint).toString())};
+        });
+    }
+}
