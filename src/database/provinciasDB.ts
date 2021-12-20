@@ -163,3 +163,29 @@ export async function getTiposDeVotosCount(idProvincia: string, idtipovoto?: str
         });
     }
 }
+
+export async function getSeccionesFromProvincias(idProvincia: string, idSeccion?: string) {
+    const instance = await DBSingleton.instance();
+
+    if (idSeccion) {
+        const result = await instance.query(
+            `
+            SELECT idProvincia, idSeccion FROM secciones WHERE idProvincia = $1 AND idSeccion = $2
+            `, 
+            [idProvincia, idSeccion]);
+        return result.rows.map((row) => {
+            return { idProvincia: row[0] as string, idSeccion: row[0] as string };
+        })[0];
+        
+    } else {
+        const result = await instance.query(
+            `
+            SELECT idProvincia, idSeccion FROM secciones WHERE idProvincia = $1
+            `,
+            [idProvincia]
+        );
+        return result.rows.map((row) => {
+            return { idProvincia: row[0] as string, idSeccion: row[1] as string};
+        });
+    }
+}

@@ -3,7 +3,8 @@ import {
     getAgrupacionesFromProvincia,
     getProvincias,
     getCargosFromProvincia,
-    getTiposDeVotosCount
+    getTiposDeVotosCount,
+    getSeccionesFromProvincias
 } from "../database/provinciasDB";
 
 let provinciaRoute = Router({});
@@ -39,6 +40,16 @@ provinciaRoute.get(
        res.status(200).json(await getTiposDeVotosCount(
            req.params.idProvincia,
            req.params.idTipoVoto
+       ))
+   }
+)
+
+provinciaRoute.get(
+    "/:idProvincia/secciones/:idSecciones?",
+   async (req, res) => {
+       res.status(200).json(await getSeccionesFromProvincias(
+           req.params.idProvincia,
+           req.params.idSecciones
        ))
    }
 )
