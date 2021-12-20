@@ -45,10 +45,12 @@ export async function getAgrupacionesFromProvincia(
             [idProv, idAgrup]
         );
         return result.rows.map((row) => {
-            return { idprovincia: row[0] as string, 
+            return {
+                idprovincia: row[0] as string,
                 provincia: row[1] as string,
                 idagrupacion: row[2] as string,
-                agrupacion: row[3] as string};
+                agrupacion: row[3] as string,
+            };
         })[0];
     } else {
         const result = await instance.query(
@@ -70,20 +72,17 @@ export async function getAgrupacionesFromProvincia(
             [idProv]
         );
         return result.rows.map((row) => {
-            return { 
-                idprovincia: row[0] as string, 
+            return {
+                idprovincia: row[0] as string,
                 provincia: row[1] as string,
                 idagrupacion: row[2] as string,
-                agrupacion: row[3] as string
+                agrupacion: row[3] as string,
             };
         });
     }
 }
 
-export async function getCargosFromProvincia(
-    idProv: string,
-    idCargo?: string
-) {
+export async function getCargosFromProvincia(idProv: string, idCargo?: string) {
     const instance = await DBSingleton.instance();
 
     if (idCargo) {
@@ -101,10 +100,12 @@ export async function getCargosFromProvincia(
             [idProv, idCargo]
         );
         return result.rows.map((row) => {
-            return { idprovincia: row[0] as string, 
+            return {
+                idprovincia: row[0] as string,
                 provincia: row[1] as string,
                 idCargo: row[2] as string,
-                cargo: row[3] as string};
+                cargo: row[3] as string,
+            };
         })[0];
     } else {
         const result = await instance.query(
@@ -121,17 +122,70 @@ export async function getCargosFromProvincia(
             [idProv]
         );
         return result.rows.map((row) => {
-            return { 
-                idprovincia: row[0] as string, 
+            return {
+                idprovincia: row[0] as string,
                 provincia: row[1] as string,
                 idCargo: row[2] as string,
-                cargo: row[3] as string
+                cargo: row[3] as string,
             };
         });
     }
 }
 
-export async function getTiposDeVotosCount(idProvincia: string, idtipovoto?: string) {
+export async function getTiposDeVotosCountByProvincia(idtipovoto?: string) {
+    const instance = await DBSingleton.instance();
+
+    if (idtipovoto) {
+        const result = await instance.query(
+            `
+            SELECT idProvincia, sum(votes)
+            FROM ((
+                SELECT idtipovoto, idmesa, votes 
+                FROM votos) as v
+                JOIN pscem ON pscem.idMesa = v.idMesa) AS vpscem
+                WHERE idtipovoto = $1
+                GROUP BY idProvincia;
+        `,
+            [idtipovoto]
+        );
+        let res2:{ [key: string]: any }  = {};
+        result.rows.forEach((row) => {
+            let id = row[0] as string;
+            (res2 as any)[id] = {
+                votos: parseInt((row[1] as bigint).toString()),
+            };
+        });
+        return res2;
+    } else {
+        const result = await instance.query(
+            `
+            SELECT idProvincia , vpscem.idtipovoto, sum(votes)
+            FROM ((
+                SELECT idtipovoto, idmesa, votes 
+                FROM votos) as v
+                JOIN pscem ON pscem.idMesa = v.idMesa) AS vpscem
+                GROUP BY idtipovoto, idProvincia;
+            `
+        );
+        let res2:{ [key: string]: any[] }  = {};
+        result.rows.forEach((row) => {
+            let id = row[0] as string;
+            if (!res2[id]) {
+                res2[id] = [];
+            }
+            (res2 as any)[id].push({
+                idtipovoto: row[1] as string,
+                votos: parseInt((row[2] as bigint).toString()),
+            });
+        });
+        return res2;
+    }
+}
+
+export async function getTiposDeVotosCount(
+    idProvincia: string,
+    idtipovoto?: string
+) {
     const instance = await DBSingleton.instance();
 
     if (idtipovoto) {
@@ -144,22 +198,26 @@ export async function getTiposDeVotosCount(idProvincia: string, idtipovoto?: str
             [idtipovoto, idProvincia]
         );
         return result.rows.map((row) => {
-            return { sum: parseInt((row[0] as bigint).toString())};
+            return { sum: parseInt((row[0] as bigint).toString()) };
         })[0];
     } else {
         const result = await instance.query(
             `
-            SELECT vpscem.idtipovoto, sum(votes)
-            FROM ((
-                SELECT idtipovoto, idmesa, votes 
-                FROM votos) as v
-                JOIN pscem ON pscem.idMesa = v.idMesa) AS vpscem
-                WHERE idProvincia = $1
-                GROUP BY idtipovoto;
-            `, 
-            [idProvincia]);
+                SELECT vpscem.idtipovoto, sum(votes)
+                FROM ((
+                    SELECT idtipovoto, idmesa, votes 
+                    FROM votos) as v
+                    JOIN pscem ON pscem.idMesa = v.idMesa) AS vpscem
+                    WHERE idProvincia = $1
+                    GROUP BY idtipovoto;
+                    `,
+            [idProvincia]
+        );
         return result.rows.map((row) => {
-            return { idtipovoto: row[0] as string, votos: parseInt((row[1] as bigint).toString()) };
+            return {
+                idtipovoto: row[0] as string,
+                votos: parseInt((row[1] as bigint).toString()),
+            };
         });
     }
 }

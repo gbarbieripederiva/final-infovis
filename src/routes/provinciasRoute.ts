@@ -3,14 +3,12 @@ import {
     getAgrupacionesFromProvincia,
     getProvincias,
     getCargosFromProvincia,
-    getTiposDeVotosCount
+    getTiposDeVotosCount,
+    getTiposDeVotosCountByProvincia
 } from "../database/provinciasDB";
 
 let provinciaRoute = Router({});
 
-provinciaRoute.get("/:id?", async (req, res) => {
-    res.status(200).json(await getProvincias(req.params.id));
-});
 provinciaRoute.get(
     "/:idProvincia/agrupaciones/:idAgrupacion?",
     async (req, res) => {
@@ -34,6 +32,15 @@ provinciaRoute.get(
 )
 
 provinciaRoute.get(
+    "/tipovoto/:idTipoVoto?",
+   async (req, res) => {
+       res.status(200).json(await getTiposDeVotosCountByProvincia(
+           req.params.idTipoVoto
+       ))
+   }
+)
+
+provinciaRoute.get(
     "/:idProvincia/tipovoto/:idTipoVoto?",
    async (req, res) => {
        res.status(200).json(await getTiposDeVotosCount(
@@ -43,4 +50,7 @@ provinciaRoute.get(
    }
 )
 
+provinciaRoute.get("/:id?", async (req, res) => {
+    res.status(200).json(await getProvincias(req.params.id));
+});
 export default provinciaRoute;
