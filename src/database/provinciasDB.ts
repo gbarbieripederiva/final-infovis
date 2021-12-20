@@ -191,14 +191,16 @@ export async function getTiposDeVotosCount(
     if (idtipovoto) {
         const result = await instance.query(
             `
-            SELECT SUM (votes) 
-            FROM votos 
+            SELECT idprovincia, idtipovoto, SUM (votes) 
+            FROM (SELECT * FROM votos 
+            JOIN pscem ON pscem.idMesa = votos.idMesa) AS vpscem
             WHERE idtipovoto = $1 AND idProvincia = $2
+            GROUP BY idprovincia, idtipovoto
             `,
             [idtipovoto, idProvincia]
         );
         return result.rows.map((row) => {
-            return { sum: parseInt((row[0] as bigint).toString()) };
+            return { idprovincia: row[0] as string, idtipovoto: row[1] as string, votos: parseInt((row[2] as bigint).toString()) };
         })[0];
     } else {
         const result = await instance.query(
