@@ -2,7 +2,8 @@ import { Router } from "express";
 import {
     getAgrupacionesFromProvincia,
     getProvincias,
-    getCargosFromProvincia
+    getCargosFromProvincia,
+    getTiposDeVotosCount
 } from "../database/provinciasDB";
 
 let provinciaRoute = Router({});
@@ -29,6 +30,16 @@ provinciaRoute.get(
            req.params.idCargos
        ))
        
+   }
+)
+
+provinciaRoute.get(
+    "/:idProvincia/tipovoto/:idTipoVoto?",
+   async (req, res) => {
+       res.status(200).json(await getTiposDeVotosCount(
+           req.params.idProvincia,
+           req.params.idTipoVoto
+       ))
    }
 )
 

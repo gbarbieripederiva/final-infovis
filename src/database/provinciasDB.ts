@@ -130,3 +130,36 @@ export async function getCargosFromProvincia(
         });
     }
 }
+
+export async function getTiposDeVotosCount(idProvincia: string, idtipovoto?: string) {
+    const instance = await DBSingleton.instance();
+
+    if (idtipovoto) {
+        const result = await instance.query(
+            `
+            SELECT SUM (votes) 
+            FROM votos 
+            WHERE idtipovoto = $1 AND idProvincia = $2
+            `,
+            [idtipovoto, idProvincia]
+        );
+        return result.rows.map((row) => {
+            return { sum: parseInt((row[0] as bigint).toString())};
+        })[0];
+    } else {
+        const result = await instance.query(
+            `
+            SELECT vpscem.idtipovoto, sum(votes)
+            FROM ((
+                SELECT idtipovoto, idmesa, votes 
+                FROM votos) as v
+                JOIN pscem ON pscem.idMesa = v.idMesa) AS vpscem
+                WHERE idProvincia = $1
+                GROUP BY idtipovoto;
+            `, 
+            [idProvincia]);
+        return result.rows.map((row) => {
+            return { idtipovoto: row[0] as string, votos: parseInt((row[1] as bigint).toString()) };
+        });
+    }
+}
