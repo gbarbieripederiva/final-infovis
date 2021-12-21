@@ -23,7 +23,7 @@ stopDockerPostgres.sh
 ```
 
 ## Antes de correr
-Antes de correr la aplicacion es importante correr
+Antes de correr la aplicacion es importante correr (dentro de la carpeta raiz del proyecto)
 ```
 npm install
 ```
